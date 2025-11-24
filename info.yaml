@@ -3,7 +3,7 @@ project:
   title:        "Traffic Generator LFSR"      # Project title
   author:       "trantai200701"      # Your name
   discord:      ""      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
-  description:  ""      # One line description of what your project does
+  description:  "A traffic generator using 2 independent 8-bit LFSRs to simulate Uplink and Downlink packets with a configurable scheduler."      # One line description of what your project does
   language:     "Verilog" # other examples include SystemVerilog, Amaranth, VHDL, etc
   clock_hz:     0       # Clock frequency in Hz (or 0 if not applicable)
 
