@@ -92,15 +92,19 @@ module traffic_gen (
     end
 endmodule
 
-/* Module LFSR 8-bit */
+/* Module LFSR 8-bit - ĐÃ SỬA LỖI */
 module lfsr_8bit #(parameter [7:0] SEED = 8'h1, parameter [7:0] TAPS = 8'hB4) (
     input wire clk, rst_n, en,
     output reg [7:0] data_out
 );
+    // SỬA LỖI: Đưa khai báo wire ra ngoài block always
+    wire feedback = ^(data_out & TAPS);
+
     always @(posedge clk or negedge rst_n) begin
-        if (!rst_n) data_out <= SEED;
-        else if (en) begin
-            wire feedback = ^(data_out & TAPS);
+        if (!rst_n) begin
+            data_out <= SEED;
+        end else if (en) begin
+            // Sử dụng biến feedback đã khai báo ở ngoài
             data_out <= {data_out[6:0], feedback};
         end
     end
