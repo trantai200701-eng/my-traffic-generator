@@ -24,13 +24,19 @@ module tb ();
   wire [7:0] uio_out;
   wire [7:0] uio_oe;
 
-  // SỬA Ở ĐÂY: Thay tên module cũ bằng tên module của bạn
+  // SỬA LỖI Ở ĐÂY:
+  // Tạo dây nguồn (wire) chứ không gán trực tiếp giá trị vào module
+  wire VPWR;
+  wire VGND;
+  assign VPWR = 1'b1; // Cấp nguồn 1
+  assign VGND = 1'b0; // Nối đất 0
+
   tt_um_traffic_gen user_project (
 
       // Include power ports for the Gate Level test:
 `ifdef GL_TEST
-      .VPWR(1'b1),
-      .VGND(1'b0),
+      .VPWR(VPWR),    // Nối vào dây VPWR
+      .VGND(VGND),    // Nối vào dây VGND
 `endif
 
       .ui_in  (ui_in),    // Dedicated inputs
