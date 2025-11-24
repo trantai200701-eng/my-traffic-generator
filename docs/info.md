@@ -1,15 +1,4 @@
-<!---
-
-This file is used to generate your project datasheet. Please fill in the information below and delete any unused
-sections.
-
-You can also include images in this folder and reference them in the markdown. Each image must be less than
-512 kb in size, and the combined size of all images must be less than 1 MB.
--->
-
 ## How it works
-
-Explain how your project works
 
 This project implements a traffic generator for Uplink (UL) and Downlink (DL) simulation using Linear Feedback Shift Registers (LFSRs).
 
@@ -24,8 +13,6 @@ The design consists of:
 
 ## How to test
 
-Explain how to use your project
-
 1.  **Reset**: Apply a low pulse to `rst_n` to reset the LFSRs and counters.
 2.  **Configuration**: Set `ui_in[3:0]` to define the period `N` (number of clock cycles between packets).
 3.  **Observation**:
@@ -35,4 +22,4 @@ Explain how to use your project
 
 ## External hardware
 
-List external hardware used in your project (e.g. PMOD, LED display, etc), if any
+No external hardware is required for the basic logic functionality. Just connect a clock source and logic analyzer to observe the outputs.
