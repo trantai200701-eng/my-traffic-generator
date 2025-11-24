@@ -1,42 +1,54 @@
-![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg) ![](../../workflows/fpga/badge.svg)
+![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg)
 
-# Tiny Tapeout Verilog Project Template
+# Uplink/Downlink Traffic Generator (LFSR-based)
 
-- [Read the documentation for project](docs/info.md)
+This project implements a hardware-based **Traffic Generator** intended for testing network systems or simulation environments. It is designed for the **SkyWater 130nm** process technology via the **Tiny Tapeout** platform.
 
-## What is Tiny Tapeout?
+The core logic generates pseudo-random 8-bit Packet IDs using Linear Feedback Shift Registers (LFSRs), simulating interleaved Uplink (UL) and Downlink (DL) traffic.
 
-Tiny Tapeout is an educational project that aims to make it easier and cheaper than ever to get your digital and analog designs manufactured on a real chip.
+## Features
 
-To learn more and get started, visit https://tinytapeout.com.
+* **Dual Independent LFSRs:**
+    * **Uplink (UL):** Generates random IDs using Seed `0xAA` and Polynomial `0xB4`.
+    * **Downlink (DL):** Generates random IDs using Seed `0x55` and Polynomial `0xD8`.
+* **Configurable Scheduler:**
+    * The period $N$ between packets is configurable via input pins (`ui_in`).
+    * A packet is generated every $N$ clock cycles.
+* **Round-Robin Arbitration:**
+    * The system strictly alternates between Uplink and Downlink packets.
 
-## Set up your Verilog project
+## How it works
 
-1. Add your Verilog files to the `src` folder.
-2. Edit the [info.yaml](info.yaml) and update information about your project, paying special attention to the `source_files` and `top_module` properties. If you are upgrading an existing Tiny Tapeout project, check out our [online info.yaml migration tool](https://tinytapeout.github.io/tt-yaml-upgrade-tool/).
-3. Edit [docs/info.md](docs/info.md) and add a description of your project.
-4. Adapt the testbench to your design. See [test/README.md](test/README.md) for more information.
+1.  **Inputs:** The system takes a 4-bit value `N_period` from the input pins.
+2.  **Processing:** An internal counter runs continuously. When the counter reaches `N_period`:
+    * The Logic determines whose turn it is (UL or DL).
+    * The corresponding LFSR advances to the next random number.
+    * The `Valid` flag is raised.
+3.  **Outputs:** The 8-bit Packet ID is sent to the output pins, along with a `Packet Type` flag (0 for UL, 1 for DL).
 
-The GitHub action will automatically build the ASIC files using [LibreLane](https://www.zerotoasiccourse.com/terminology/librelane/).
+## Pinout
 
-## Enable GitHub actions to build the results page
+| Pin | Direction | Name | Description |
+| --- | --- | --- | --- |
+| **ui_in[3:0]** | Input | N_period | Sets the generation period (Cycles between packets) |
+| **ui_in[7:4]** | Input | Unused | Tied to 0 |
+| **uo_out[7:0]** | Output | Packet ID | The generated 8-bit pseudo-random ID |
+| **uio_out[0]** | Output | Packet Type | `0`: Uplink (UL), `1`: Downlink (DL) |
+| **uio_out[1]** | Output | Valid | `1` when data is valid, `0` otherwise |
+| **clk** | Input | Clock | System Clock |
+| **rst_n** | Input | Reset | Active Low Reset |
 
-- [Enabling GitHub Pages](https://tinytapeout.com/faq/#my-github-action-is-failing-on-the-pages-part)
+## Verification
 
-## Resources
+The project has been verified using:
+* **RTL Simulation:** Cocotb (Python) testbench verifying the logic and scheduler timing.
+* **Gate Level Simulation (GLS):** Verified post-synthesis netlist behavior.
+* **Physical Verification:** Passed Tiny Tapeout Precheck (DRC/LVS clean).
 
-- [FAQ](https://tinytapeout.com/faq/)
-- [Digital design lessons](https://tinytapeout.com/digital_design/)
-- [Learn how semiconductors work](https://tinytapeout.com/siliwiz/)
-- [Join the community](https://tinytapeout.com/discord)
-- [Build your design locally](https://www.tinytapeout.com/guides/local-hardening/)
+## 3D Render
 
-## What next?
+*(Once the GDS action completes, you can view the 3D render of the chip here or via the GitHub Pages deployment)*
 
-- [Submit your design to the next shuttle](https://app.tinytapeout.com/).
-- Edit [this README](README.md) and explain your design, how it works, and how to test it.
-- Share your project on your social network of choice:
-  - LinkedIn [#tinytapeout](https://www.linkedin.com/search/results/content/?keywords=%23tinytapeout) [@TinyTapeout](https://www.linkedin.com/company/100708654/)
-  - Mastodon [#tinytapeout](https://chaos.social/tags/tinytapeout) [@matthewvenn](https://chaos.social/@matthewvenn)
-  - X (formerly Twitter) [#tinytapeout](https://twitter.com/hashtag/tinytapeout) [@tinytapeout](https://twitter.com/tinytapeout)
-  - Bluesky [@tinytapeout.com](https://bsky.app/profile/tinytapeout.com)
+---
+*Project by: [Your Name/GitHub Username]*
+*Built for Tiny Tapeout*
