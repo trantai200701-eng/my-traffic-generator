@@ -45,12 +45,11 @@ The project has been verified using:
 * **Gate Level Simulation (GLS):** Verified post-synthesis netlist behavior.
 * **Physical Verification:** Passed Tiny Tapeout Precheck (DRC/LVS clean).
 
-## 3D Render
-
 ## 3D Viewer
 
 View the 3D GDSII of this chip here:
 👉 **[Click to Open 3D Viewer](https://gds-viewer.tinytapeout.com/?pdk=sky130A&model=https%3A%2F%2Ftrantai200701-eng.github.io%2Fmy-traffic-generator%2Ftinytapeout.oas)**
+
 ---
 *Project by: Tran Tan Tai*
 *Built for Tiny Tapeout*
